@@ -43,6 +43,7 @@ group :development, :test do
   # START_HIGHLIGHT
   gem 'poltergeist'
   # END_HIGHLIGHT
+  gem 'database_cleaner'
 end
 
 group :development do
