@@ -40,6 +40,9 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'rspec-rails', '~> 3.0'
+  # START_HIGHLIGHT
+  gem 'poltergeist'
+  # END_HIGHLIGHT
 end
 
 group :development do
