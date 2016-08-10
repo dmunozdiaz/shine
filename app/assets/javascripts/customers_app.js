@@ -6,7 +6,18 @@
  * We make no guarantees that this code is fit for any purpose.
  * Visit http://www.pragmaticprogrammer.com/titles/dcbang for more book information.
  ***/
-var app = angular.module("customers", []);
+var app = angular.module("customers", ['ngRoute','templates']);
+
+app.config([
+        "$routeProvider",
+        function($routeProvider){
+            $routeProvider.when("/",{
+                controller:     "CustomerSearchController",
+                templateUrl:    "customer_search.html"
+            });
+        }
+    ]);
+
 
 app.controller("CustomerSearchController", [
     "$scope", "$http",

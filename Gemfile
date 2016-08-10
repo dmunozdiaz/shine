@@ -9,6 +9,9 @@ gem 'bower-rails'
 gem 'faker'
 gem 'figaro'
 
+gem "angular-rails-templates"
+gem "sprockets", "~> 2.0"
+
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.15'
 # Use SCSS for stylesheets
