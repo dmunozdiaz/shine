@@ -25,7 +25,13 @@ class CustomersController < ApplicationController
     customer = Customer.find(params[:id])
 
     respond_to do |format|
-      format.json {render json: customer}
+      format.json do
+        render json: {
+            customer: customer,
+            shipping_address: customer.primary_shipping_address,
+            billing_address:  customer.billing_address
+        } 
+      end 
     end 
  
   end
