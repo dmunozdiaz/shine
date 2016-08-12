@@ -6,7 +6,7 @@
  * We make no guarantees that this code is fit for any purpose.
  * Visit http://www.pragmaticprogrammer.com/titles/dcbang for more book information.
  ***/
-var app = angular.module("customers", ['ngRoute','templates']);
+var app = angular.module("customers", ['ngRoute','ngResource','templates']);
 
 app.config([
         "$routeProvider",
@@ -60,19 +60,25 @@ app.controller("CustomerSearchController", [
 ]);
 
 app.controller("CustomerDetailController", [
-    "$scope", "$http", "$routeParams",
-    function($scope, $http, $routeParams){
-        var customerId = $routeParams.id;
-        $scope.customer = {};
+    "$scope", "$routeParams", "$resource",
+    function($scope, $routeParams, $resource){
+        $scope.customerId = $routeParams.id;
+        var Customer = $resource('/customers/'+$scope.customerId+'.json')
 
-        $http.get("/customers/"+customerId+".json")
-            .then(
-                function(response){
-                    $scope.customer = response.data;
-                },function(response){
-                    alert("There was a problem: "+ response.status);
-                }
-            );
-
+        $scope.customer = Customer.get()
+        
     }
+    ]);
+
+app.controller("CustomerCreditCardController",[
+        "$scope", "$resource",
+        function($scope, $resource){
+            var CreditCardInfo = $resource('/fake_billing.json')
+            $scope.setCardholderId = function(cardholderId){
+                 $scope.creditCard = CreditCardInfo.get({"cardholder_id":cardholderId});
+            }
+
+            
+           
+        }
     ]);

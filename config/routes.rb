@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'fake_billing/show'
+
+  get 'fake_billing_controller/show'
+
   get 'angular_test/index'
 
   get 'customers/index'
@@ -6,6 +10,7 @@ Rails.application.routes.draw do
   devise_for :users
   get 'dashboard/index'
   get 'angular_test', to: 'angular_test#index'
+  get 'fake_billing', to: 'fake_billing#show'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
