@@ -22,16 +22,10 @@ class CustomersController < ApplicationController
   end
 
   def show
-    customer = Customer.find(params[:id])
-
+    customer_detail = CustomerDetail.find(params[:id])
+    sleep 5
     respond_to do |format|
-      format.json do
-        render json: {
-            customer: customer,
-            shipping_address: customer.primary_shipping_address,
-            billing_address:  customer.billing_address
-        } 
-      end 
+      format.json { render json: customer_detail }
     end 
  
   end
