@@ -121,3 +121,8 @@ Customer.all.pluck(:id).each do |customer_id|
     create_shipping_address(customer_id,num_states,i == 0)
   end
 end
+
+
+['registered', 'banned', 'moderator', 'admin'].each do |role|
+  Role.find_or_create_by({name: role})
+end

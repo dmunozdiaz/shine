@@ -78,6 +78,38 @@ ALTER SEQUENCE addresses_id_seq OWNED BY addresses.id;
 
 
 --
+-- Name: assignments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE assignments (
+    id integer NOT NULL,
+    user_id integer,
+    role_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: assignments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE assignments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: assignments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE assignments_id_seq OWNED BY assignments.id;
+
+
+--
 -- Name: customers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -215,6 +247,37 @@ ALTER SEQUENCE customers_shipping_addresses_id_seq OWNED BY customers_shipping_a
 
 
 --
+-- Name: roles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE roles (
+    id integer NOT NULL,
+    name character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: roles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE roles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: roles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE roles_id_seq OWNED BY roles.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -260,6 +323,15 @@ CREATE TABLE users (
     last_sign_in_ip inet,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
+    roles_mask integer,
+    invitation_token character varying,
+    invitation_created_at timestamp without time zone,
+    invitation_sent_at timestamp without time zone,
+    invitation_accepted_at timestamp without time zone,
+    invitation_limit integer,
+    invited_by_id integer,
+    invited_by_type character varying,
+    invitations_count integer DEFAULT 0,
     CONSTRAINT email_must_be_company_email CHECK (((email)::text ~* '^[^@]+@example\.com'::text))
 );
 
@@ -294,6 +366,13 @@ ALTER TABLE ONLY addresses ALTER COLUMN id SET DEFAULT nextval('addresses_id_seq
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY assignments ALTER COLUMN id SET DEFAULT nextval('assignments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY customers ALTER COLUMN id SET DEFAULT nextval('customers_id_seq'::regclass);
 
 
@@ -309,6 +388,13 @@ ALTER TABLE ONLY customers_billing_addresses ALTER COLUMN id SET DEFAULT nextval
 --
 
 ALTER TABLE ONLY customers_shipping_addresses ALTER COLUMN id SET DEFAULT nextval('customers_shipping_addresses_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regclass);
 
 
 --
@@ -334,6 +420,14 @@ ALTER TABLE ONLY addresses
 
 
 --
+-- Name: assignments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY assignments
+    ADD CONSTRAINT assignments_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: customers_billing_addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -355,6 +449,14 @@ ALTER TABLE ONLY customers
 
 ALTER TABLE ONLY customers_shipping_addresses
     ADD CONSTRAINT customers_shipping_addresses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY roles
+    ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
 
 
 --
@@ -423,6 +525,27 @@ CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 
 
 --
+-- Name: index_users_on_invitation_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_invitation_token ON users USING btree (invitation_token);
+
+
+--
+-- Name: index_users_on_invitations_count; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_users_on_invitations_count ON users USING btree (invitations_count);
+
+
+--
+-- Name: index_users_on_invited_by_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_users_on_invited_by_id ON users USING btree (invited_by_id);
+
+
+--
 -- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -483,4 +606,16 @@ INSERT INTO schema_migrations (version) VALUES ('20160811173151');
 INSERT INTO schema_migrations (version) VALUES ('20160811194139');
 
 INSERT INTO schema_migrations (version) VALUES ('20160811201256');
+
+INSERT INTO schema_migrations (version) VALUES ('20160813111558');
+
+INSERT INTO schema_migrations (version) VALUES ('20160813111859');
+
+INSERT INTO schema_migrations (version) VALUES ('20160816173417');
+
+INSERT INTO schema_migrations (version) VALUES ('20160816180622');
+
+INSERT INTO schema_migrations (version) VALUES ('20160816180705');
+
+INSERT INTO schema_migrations (version) VALUES ('20160818213353');
 
