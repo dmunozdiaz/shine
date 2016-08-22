@@ -1,6 +1,8 @@
 class CustomersController < ApplicationController
   PAGE_SIZE = 10
   def index
+    @user = current_user
+
     @page = (params[:page || 0]).to_i
   	if params[:keywords].present?
   		@keywords = params[:keywords]

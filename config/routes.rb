@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  
   get 'fake_billing/show'
 
   get 'fake_billing_controller/show'

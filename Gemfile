@@ -8,6 +8,10 @@ gem 'devise'
 gem 'bower-rails'
 gem 'faker'
 gem 'figaro'
+gem 'cancan'
+gem 'role_model'
+gem 'devise_invitable'
+gem 'rails_admin'
 
 gem "angular-rails-templates"
 gem "sprockets", "~> 2.0"
